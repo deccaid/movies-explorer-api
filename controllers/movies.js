@@ -58,13 +58,12 @@ module.exports.addMovie = (req, res, next) => {
 
 module.exports.deleteMovie = (req, res, next) => {
   Movie.findById(req.params.movieId)
-    .orFail(new NotFounderError(`Фильм с _id: ${req.params.movieId} отсутсвует.`))
+    .orFail(new NotFounderError(`Фильм с _id: ${req.params.id} отсутсвует.`))
     .then((movie) => {
       if (!movie.owner.equals(req.user._id)) {
         throw new ForbiddenError('Фильм другого пользователя');
       }
       Movie.deleteOne(movie)
-        .orFail()
         .then(() => {
           res.status(HTTP_STATUS_OK).send({ message: 'Фильм удалён' });
         })
