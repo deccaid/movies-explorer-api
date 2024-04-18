@@ -35,10 +35,10 @@ module.exports.editUserMe = (req, res, next) => {
     .orFail()
     .then((user) => res.status(HTTP_STATUS_OK).send(user))
     .catch((err) => {
-      if (err instanceof mongoose.Error.ValidationError) {
+      if (err.code === 11000) {
+        next(new ConflictError(`${email} занят, введите другой`));
+      } else if (err instanceof mongoose.Error.ValidationError) {
         next(new BadRequestError(err.message));
-      } else if (err instanceof mongoose.Error.DocumentNotFoundError) {
-        next(new NotFounderError('Пользователь с таким ID не найден'));
       } else {
         next(err);
       }
@@ -84,8 +84,6 @@ module.exports.addUser = (req, res, next) => {
 
 module.exports.login = async (req, res, next) => {
   const { email, password } = req.body;
-  console.log(req.body);
-
   return User
     .findUserByCredentials(email, password)
     .then((user) => {
