@@ -4,6 +4,8 @@ const allowedCors = [
   'http://decaid.diplom.nomoredomainswork.ru',
   'https://decaid.diplom.nomoredomainswork.ru',
   'https://api.nomoreparties.co',
+  'http://forestofrest.nomoredomainswork.ru/signup',
+  'https://forestofrest.nomoredomainswork.ru/signup',
 ];
 
 module.exports = (req, res, next) => {
